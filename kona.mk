@@ -452,6 +452,12 @@ PRODUCT_DEXPREOPT_SPEED_APPS += \
     SystemUI \
     GoogleDialer
 
+# Prebuilt packages
+PRODUCT_PACKAGES += \
+    MlkitBarcodeUI \
+    VisionBarcode \
+    QRCameraOverlay
+
 # QMI
 PRODUCT_PACKAGES += \
     libjson \
