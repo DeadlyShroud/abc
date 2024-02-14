@@ -46,6 +46,8 @@ public class DcDimmingSettingsFragment extends PreferenceFragment implements
     private static final String HBM_KEY = "hbm";
 
     private File hbmFile;
+    private static final String HBM_NODE = "/sys/class/drm/card0/card0-DSI-1/disp_param";
+    private static final String BRIGHTNESS_NODE = "/sys/devices/platform/soc/ae00000.qcom,mdss_mdp/backlight/panel0-backlight/brightness";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -70,6 +72,10 @@ public class DcDimmingSettingsFragment extends PreferenceFragment implements
                 disableHBM();
             }
             updateHBMPreference(!enabled);
+            FileUtils.writeLine(DC_DIMMING_NODE, (Boolean) newValue ? "1":"0");
+            FileUtils.writeLine(HBM_NODE, (Boolean) newValue ? "0x10000":"0xF0000");
+            // Update the brightness node so dc dimming updates its state
+            FileUtils.writeLine(BRIGHTNESS_NODE, FileUtils.readOneLine(BRIGHTNESS_NODE));
         }
         return true;
     }

@@ -55,6 +55,8 @@ public class DcDimmingTileService extends TileService {
             }
         }
     };
+    private static final String HBM_NODE = "/sys/class/drm/card0/card0-DSI-1/disp_param";
+    private static final String BRIGHTNESS_NODE = "/sys/devices/platform/soc/ae00000.qcom,mdss_mdp/backlight/panel0-backlight/brightness";
 
     private void updateUI(boolean enabled) {
         final Tile tile = getQsTile();
@@ -120,6 +122,10 @@ public class DcDimmingTileService extends TileService {
             hbmFile.setWritable(true);
         }
         sharedPrefs.edit().putBoolean(DC_DIMMING_ENABLE_KEY, enabled).apply();
+        FileUtils.writeLine(HBM_NODE, enabled ? "0x10000":"0xF0000");
+        // Update the brightness node so dc dimming updates its state
+        FileUtils.writeLine(BRIGHTNESS_NODE, FileUtils.readOneLine(BRIGHTNESS_NODE));
+        sharedPrefs.edit().putBoolean(DC_DIMMING_ENABLE_KEY, enabled).commit();
         updateUI(enabled);
     }
 }
