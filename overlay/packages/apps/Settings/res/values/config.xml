@@ -74,4 +74,7 @@
 
     <bool name="config_show_refresh_rate_controls">true</bool>
 
+    <!-- Whether to enable Lineage Fast Charge Prefernece -->
+    <bool name="config_lineageFastChargeSupported">true</bool>
+
 </resources>
